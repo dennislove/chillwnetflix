@@ -70,32 +70,33 @@ const MoveList = ({ title, data }) => {
           responsive={responsive}
           className="flex items-center space-x-5"
         >
-          {data.map((item) => (
-            <div
-              key={item.id}
-              className="relative w-[200px] h-[300px] "
-              onClick={() => handleTrailer(item.id)}
-            >
-              <div className="relative h-64 overflow-hidden rounded-lg shadow-md group">
-                <img
-                  src={`${import.meta.env.VITE_IMG_URL}${item.poster_path}`}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button
-                    className="text-white text-4xl transform scale-0 group-hover:scale-100 transition-transform duration-300"
-                    aria-label="Play"
-                  >
-                    <FaPlay />
-                  </button>
+          {data.length > 0 &&
+            data.map((item) => (
+              <div
+                key={item.id}
+                className="relative w-[200px] h-[300px] "
+                onClick={() => handleTrailer(item.id)}
+              >
+                <div className="relative h-64 overflow-hidden rounded-lg shadow-md group">
+                  <img
+                    src={`${import.meta.env.VITE_IMG_URL}${item.poster_path}`}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      className="text-white text-4xl transform scale-0 group-hover:scale-100 transition-transform duration-300"
+                      aria-label="Play"
+                    >
+                      <FaPlay />
+                    </button>
+                  </div>
+                  <p className="absolute bottom-4 left-2 m-2 px-2 py-1  text-white bg-black bg-opacity-60 font-bold rounded uppercase ">
+                    {item.title || item.original_title || item.original_name}
+                  </p>
                 </div>
-                <p className="absolute bottom-4 left-2 m-2 px-2 py-1  text-white bg-black bg-opacity-60 font-bold rounded uppercase ">
-                  {item.title || item.original_title || item.original_name}
-                </p>
               </div>
-            </div>
-          ))}
+            ))}
         </Carousel>
 
         <Modal
