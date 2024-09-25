@@ -10,9 +10,9 @@ function App() {
   useEffect(() => {
     const fetchMovie = async () => {
       const url1 =
-        'https://api.themoviedb.org/3/movie/popular?language=vi&page=1';
+        'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
       const url2 =
-        'https://api.themoviedb.org/3/tv/top_rated?language=vi&page=1';
+        'https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1';
 
       const options = {
         method: 'GET',
