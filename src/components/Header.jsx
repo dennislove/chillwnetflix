@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FaSearch, FaBell, FaUser, FaBars } from 'react-icons/fa';
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -11,6 +12,7 @@ const Header = () => {
   const toggleProfileDropdown = () =>
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
 
+  const [search, setSearch] = useState('');
   return (
     <header className="bg-black text-white py-2 px-10 relative">
       <div className="flex items-center justify-between">
@@ -53,18 +55,18 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center space-x-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-white text-black px-4 py-2 rounded-full pr-10 focus:outline-none focus:ring-2 focus:ring-red-500"
-            />
-            <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          </div>
-
-          <button className="relative" aria-label="Notifications">
-            <FaBell className="text-2xl" />
-            <span className="absolute top-0 right-0 bg-red-500 rounded-full w-2 h-2"></span>
+          <input
+            type="text"
+            placeholder="Search"
+            className="border border-gray-300 p-2 text-black"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button
+            className="bg-red-700 text-white px-3 py-1 rounded-lg"
+            onClick={() => onSearch(search)}
+          >
+            Search
           </button>
 
           <div className="relative">
@@ -136,6 +138,10 @@ const Header = () => {
       )}
     </header>
   );
+};
+
+Header.propTypes = {
+  onSearch: PropTypes.func.isRequired
 };
 
 export default Header;

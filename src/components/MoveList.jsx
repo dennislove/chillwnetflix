@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Modal from 'react-modal';
+import { MovieContext } from '../context/MovieDetailContext';
 
 import { FaPlay } from 'react-icons/fa';
 import YouTube from 'react-youtube';
@@ -38,29 +40,8 @@ const MoveList = ({ title, data }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState('');
 
-  const handleTrailer = async (id) => {
-    setTrailerKey('');
-    try {
-      const url = `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`;
+  const { handleVideoTrailer } = useContext(MovieContext);
 
-      const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`
-        }
-      };
-
-      const movieKey = await fetch(url, options);
-      const data = await movieKey.json();
-      setTrailerKey(data.results[0].key);
-      setModalIsOpen(true);
-    } catch (error) {
-      setModalIsOpen(false);
-
-      console.log(error);
-    }
-  };
   return (
     <div className="text-white p-10 mb-10">
       <h2 className=" uppercase text-3xl font-bold">{title}</h2>
@@ -70,22 +51,22 @@ const MoveList = ({ title, data }) => {
           responsive={responsive}
           className="flex items-center space-x-5"
         >
-          {data.length > 0 &&
+          {data &&
+            data.length > 0 &&
             data.map((item) => (
-              <div
-                key={item.id}
-                className="relative w-[200px] h-[300px] "
-                onClick={() => handleTrailer(item.id)}
-              >
+              <div key={item.id} className="relative w-[200px] h-[300px]">
                 <div className="relative h-64 overflow-hidden rounded-lg shadow-md group">
                   <img
                     src={`${import.meta.env.VITE_IMG_URL}${item.poster_path}`}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div
+                    className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                    onClick={() => handleVideoTrailer(item.id)}
+                  >
                     <button
-                      className="text-white text-4xl transform scale-0 group-hover:scale-100 transition-transform duration-300"
+                      className="text-white  text-4xl transform scale-0 group-hover:scale-100 transition-transform duration-300"
                       aria-label="Play"
                     >
                       <FaPlay />
@@ -123,6 +104,10 @@ const MoveList = ({ title, data }) => {
       </div>
     </div>
   );
+};
+MoveList.propTypes = {
+  title: PropTypes.string.isRequired,
+  data: PropTypes.array
 };
 
 export default MoveList;
